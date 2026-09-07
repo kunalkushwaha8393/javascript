@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A stunning, modern Temperature Converter supporting Celsius, Fahrenheit, and Kelvin with live background transitions."
+    />
+    <title>ThermoConvert — Temperature Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body id="body" class="theme-normal">
+    <!-- Animated background blobs -->
+    <div class="bg-blob blob-1" aria-hidden="true"></div>
+    <div class="bg-blob blob-2" aria-hidden="true"></div>
+    <div class="bg-blob blob-3" aria-hidden="true"></div>
+
+    <!-- Floating particles -->
+    <div class="particles" aria-hidden="true" id="particles"></div>
+
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <div class="logo">
+          <span class="logo-icon" id="thermometerIcon">🌡️</span>
+          <div class="logo-text">
+            <h1>ThermoConvert</h1>
+            <p class="tagline">Instant Temperature Conversion</p>
+          </div>
+        </div>
+        <div class="temp-badge" id="tempBadge">
+          <span class="badge-label">Status</span>
+          <span class="badge-value" id="badgeValue">Enter a value</span>
+        </div>
+      </header>
+
+      <!-- Main Card -->
+      <main class="card" id="mainCard">
+        <!-- Input Section -->
+        <section class="input-section" aria-label="Temperature input">
+          <div class="input-wrapper">
+            <label for="tempInput" class="input-label">Enter Temperature</label>
+            <div class="input-group">
+              <input
+                type="number"
+                id="tempInput"
+                class="temp-input"
+                placeholder="e.g. 100"
+                aria-label="Temperature value"
+                step="any"
+              />
+              <select id="fromUnit" class="unit-select" aria-label="From unit">
+                <option value="celsius">°C</option>
+                <option value="fahrenheit">°F</option>
+                <option value="kelvin">K</option>
+              </select>
+            </div>
+            <div class="error-msg" id="errorMsg" role="alert" aria-live="polite">
+              ⚠️ Please enter a valid temperature!
+            </div>
+          </div>
+        </section>
+
+        <!-- Convert Arrow -->
+        <div class="arrow-section" aria-hidden="true">
+          <div class="arrow-line"></div>
+          <div class="arrow-icon" id="arrowIcon">⇅</div>
+          <div class="arrow-line"></div>
+        </div>
+
+        <!-- Results Section -->
+        <section class="results-section" aria-label="Conversion results">
+          <h2 class="results-title">Converted Values</h2>
+          <div class="results-grid">
+            <!-- Celsius Card -->
+            <div class="result-card" id="celsiusCard" data-unit="celsius">
+              <div class="result-unit-icon">🧊</div>
+              <div class="result-body">
+                <span class="result-unit-name">Celsius</span>
+                <span class="result-value" id="celsiusResult">—</span>
+                <span class="result-unit-sym">°C</span>
+              </div>
+              <button
+                class="copy-btn"
+                id="copyC"
+                aria-label="Copy Celsius value"
+                title="Copy"
+              >⧉</button>
+            </div>
+
+            <!-- Fahrenheit Card -->
+            <div class="result-card" id="fahrenheitCard" data-unit="fahrenheit">
+              <div class="result-unit-icon">🔥</div>
+              <div class="result-body">
+                <span class="result-unit-name">Fahrenheit</span>
+                <span class="result-value" id="fahrenheitResult">—</span>
+                <span class="result-unit-sym">°F</span>
+              </div>
+              <button
+                class="copy-btn"
+                id="copyF"
+                aria-label="Copy Fahrenheit value"
+                title="Copy"
+              >⧉</button>
+            </div>
+
+            <!-- Kelvin Card -->
+            <div class="result-card" id="kelvinCard" data-unit="kelvin">
+              <div class="result-unit-icon">⚛️</div>
+              <div class="result-body">
+                <span class="result-unit-name">Kelvin</span>
+                <span class="result-value" id="kelvinResult">—</span>
+                <span class="result-unit-sym">K</span>
+              </div>
+              <button
+                class="copy-btn"
+                id="copyK"
+                aria-label="Copy Kelvin value"
+                title="Copy"
+              >⧉</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Temperature Gauge -->
+        <section class="gauge-section" aria-label="Temperature gauge">
+          <div class="gauge-label-row">
+            <span>❄️ Freezing</span>
+            <span class="gauge-status" id="gaugeStatus">—</span>
+            <span>🔥 Boiling</span>
+          </div>
+          <div class="gauge-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="gaugeTrack">
+            <div class="gauge-fill" id="gaugeFill"></div>
+            <div class="gauge-thumb" id="gaugeThumb"></div>
+          </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <div class="action-btns">
+          <button class="btn btn-primary" id="convertBtn" aria-label="Convert temperature">
+            <span class="btn-icon">⚡</span> Convert
+          </button>
+          <button class="btn btn-secondary" id="clearBtn" aria-label="Clear all fields">
+            <span class="btn-icon">✕</span> Clear
+          </button>
+        </div>
+
+        <!-- Quick Presets -->
+        <section class="presets-section" aria-label="Quick preset temperatures">
+          <p class="presets-title">Quick Presets</p>
+          <div class="presets-grid">
+            <button class="preset-btn" id="preset1" data-value="0" data-unit="celsius" aria-label="Water freezing point">
+              💧 Water Freezes<br /><small>0°C</small>
+            </button>
+            <button class="preset-btn" id="preset2" data-value="100" data-unit="celsius" aria-label="Water boiling point">
+              ♨️ Water Boils<br /><small>100°C</small>
+            </button>
+            <button class="preset-btn" id="preset3" data-value="37" data-unit="celsius" aria-label="Body temperature">
+              🫀 Body Temp<br /><small>37°C</small>
+            </button>
+            <button class="preset-btn" id="preset4" data-value="-273.15" data-unit="celsius" aria-label="Absolute zero">
+              🌌 Absolute Zero<br /><small>−273.15°C</small>
+            </button>
+          </div>
+        </section>
+
+        <!-- Formula Display -->
+        <section class="formula-section" id="formulaSection" aria-label="Conversion formula used">
+          <p class="formula-title">📐 Formula Used</p>
+          <p class="formula-text" id="formulaText">Enter a value to see the formula.</p>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p>Built with ❤️ kunal · ThermoConvert · Temperature Converter</p>
+      </footer>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
